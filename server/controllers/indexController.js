@@ -1,5 +1,5 @@
 const HttpResponse = require("../models/http-response");
-const MessageModel = require("../models/messageModel");
+const messageModel = require("../models/messageModel");
 
 const { validationResult } = require("express-validator");
 
@@ -17,7 +17,7 @@ const addMessage = async (req, res , next) => {
   console.log(req.body);
   const { body, sender } = req.body;
 
-  const createdMessage = new MessageModel({
+  const createdMessage = new messageModel({
     body,
     sender,
   });
@@ -39,13 +39,29 @@ const addMessage = async (req, res , next) => {
 
 const getMessages = async (req, res) => {
   try {
-    const data = await MessageModel.find({}).sort({"createdAt": -1});
-    res.send({ Message: data, success: true });
+    const messages = await messageModel.find({}).sort({"createdAt": -1});
+    res.send({ message: messages, success: true });
   } catch (error) {
     console.error(error);
     res.send({ success: false });
   }
 };
 
+
+// deleteMessages=====================================================================
+
+const deleteMessage = async (req, res) => {
+  try {
+    const messageDetails = await messageModel.deleteOne({ _id: req.params.id });
+    res.send({ message: messageDetails, success: true });
+  } catch (error) {
+    console.error(error);
+    res.send({ success: false });
+  }
+};
+
+
+
 exports.addMessage = addMessage;
 exports.getMessages = getMessages;
+exports.deleteMessage = deleteMessage;

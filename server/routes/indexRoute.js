@@ -11,5 +11,7 @@ router.post(
   indexController.addMessage
 );
 router.get("/get_messages", indexController.getMessages);
+router.delete("/delete_message/:id", indexController.deleteMessage);
+
 
 module.exports = router;
