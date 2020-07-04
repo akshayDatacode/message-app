@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const messageSchema = new Schema(
   {
-    // Sign up Information
+    // Message  Information
     body: { type: String },
     sender: { type: String },
   },

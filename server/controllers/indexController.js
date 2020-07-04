@@ -1,9 +1,19 @@
 const HttpResponse = require("../models/http-response");
 const MessageModel = require("../models/messageModel");
 
+const { validationResult } = require("express-validator");
+
 // ===================================
 
-const addMessage = async (req, res) => {
+const addMessage = async (req, res , next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpResponse("Invalid inputs passed, please check your data.", 422),
+      console.log(errors) 
+      );
+  }
+
   console.log(req.body);
   const { body, sender } = req.body;
 
