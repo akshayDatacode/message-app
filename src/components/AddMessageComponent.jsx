@@ -1,8 +1,48 @@
 import React, { Component } from "react";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
+import axios from "axios";
+
+const API = "http://www.localhost:5000/api/add_message";
 
 class AddMessageComponent extends Component {
-  state = {};
+  state = {
+    body: "",
+    sender: "",
+    isOnline: false,
+  };
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+
+    const message = {
+      body: this.state.body,
+      sender: this.state.sender,
+    };
+
+    axios
+      .post(API, message)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  handleInputChangeBody = (event) => {
+    event.preventDefault();
+    this.setState({
+      body: event.target.value,
+    });
+  };
+
+  handleInputChangeSender = (event) => {
+    event.preventDefault();
+    this.setState({
+      sender: event.target.value,
+    });
+  };
+
   render() {
     return (
       <>
@@ -21,48 +61,11 @@ class AddMessageComponent extends Component {
               width={100}
               height={30}
               onChange={(checked) => {
-                this.setState({ isUserAdmin: checked });
+                this.setState({ isOnline: checked });
               }}
             />
           </div>
         </div>
-        {/* <form>
-          <center>
-            <div className="form-group ">
-              <label for="exampleInputEmail1" className="mr-4">
-                Sender Name :
-              </label>
-              <input
-                type="text"
-                value={this.state.todo}
-                onChange={(event) => {
-                  // this.handleInputChangeBody(event);
-                }}
-              />
-              {this.state.showError && (
-                <h6 className="text-danger">Please Insert Todo Task</h6>
-              )}
-              <br />
-              <label for="exampleInputEmail1" className="mr-4">
-                Message Body :
-              </label>
-              <input
-                type="textbox"
-                value={this.state.todo}
-                onChange={(event) => {
-                  //this.handleInputChangeBody(event);
-                }}
-              />
-            </div>
-            <button
-              className="btn btn-success text-center"
-              onClick={this.handleSubmit}
-            >
-              Submit
-            </button>
-          </center>
-        </form> */}
-
         <form>
           <div className="form-group row">
             <label for="inputEmail3" className="col-sm-2 col-form-label">
@@ -73,6 +76,7 @@ class AddMessageComponent extends Component {
                 type="email"
                 className="form-control"
                 placeholder="Sender Name"
+                onChange={this.handleInputChangeSender}
               />
             </div>
           </div>
@@ -85,13 +89,18 @@ class AddMessageComponent extends Component {
                 type="password"
                 className="form-control"
                 placeholder="Message Body"
+                onChange={this.handleInputChangeBody}
               />
             </div>
           </div>
 
           <div className="form-group row">
             <div className="col-sm-10">
-              <button type="submit" className="btn btn-primary">
+              <button
+                type="submit"
+                className="btn btn-primary"
+                onClick={this.handleSubmit}
+              >
                 Send Message
               </button>
             </div>
