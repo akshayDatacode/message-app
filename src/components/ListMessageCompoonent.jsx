@@ -4,6 +4,8 @@ import axios from "axios";
 const API = "http://www.localhost:5000/api/get_messages";
 
 class ListMessageComponent extends Component {
+  intervalID;
+
   state = {
     message: [],
     isLoading: false,
@@ -11,23 +13,30 @@ class ListMessageComponent extends Component {
   };
 
   componentDidMount() {
-    this.setState({ isLoading: true });
-    console.log("Did Mount");
+    this.getMessages();
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.intervalID);
+  }
+
+  getMessages = () => {
     axios
       .get(API)
-      .then((result) =>
+      .then((result) => {
         this.setState({
           message: result.data.message,
           isLoading: false,
-        })
-      )
+        });
+        this.intervalID = setTimeout(this.getMessages, 1000);
+      })
       .catch((error) =>
         this.setState({
           error,
           isLoading: false,
         })
       );
-  }
+  };
 
   render() {
     return (
