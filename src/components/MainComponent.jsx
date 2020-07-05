@@ -8,6 +8,7 @@ class MainComponent extends Component {
   state = {
     show: false,
     messageId: {},
+    isOnline: true,
   };
 
   deleteMessage = () => {
@@ -39,15 +40,26 @@ class MainComponent extends Component {
     this.setState({ show: false });
   };
 
+  // Toggle
+  handleToggle = (status) => {
+    this.setState({ isOnline: status });
+  };
+
   render() {
     return (
       <>
         <div className="row">
           <div className="col-md-6 p-5 border border-danger">
-            <AddMessageComponent />
+            <AddMessageComponent
+              isOnline={this.state.isOnline}
+              handleToggle={this.handleToggle}
+            />
           </div>
           <div className="col-md-6 p-5 border border-dark">
-            <ListMessageComponent handleDelete={this.handleDelete} />
+            <ListMessageComponent
+              handleDelete={this.handleDelete}
+              isOnline={this.state.isOnline}
+            />
             <DeleteModal
               handleClose={this.handleClose}
               show={this.state.show}

@@ -8,7 +8,6 @@ class AddMessageComponent extends Component {
   state = {
     body: "",
     sender: "",
-    isOnline: false,
   };
 
   handleSubmit = (event) => {
@@ -18,15 +17,16 @@ class AddMessageComponent extends Component {
       body: this.state.body,
       sender: this.state.sender,
     };
-
-    axios
-      .post(API, message)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (this.props.isOnline) {
+      axios
+        .post(API, message)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
 
     this.setState({ body: "", sender: "" });
   };
@@ -50,11 +50,12 @@ class AddMessageComponent extends Component {
       <>
         <h3 className="text-center">Message Send Form</h3>
         <h6 className="badge badge-primary ">Network Mode :</h6>
+        {this.props.isOnline ? <p>Online</p> : <p>Offline</p>}
         <div className="row text-right mb-3">
           <div className="ml-3">
             {/* ref toggle https://gitbrent.github.io/bootstrap-switch-button-react/ */}
             <BootstrapSwitchButton
-              checked={true}
+              checked={this.props.isOnline}
               onlabel="Online"
               offlabel="Offline"
               onstyle="success"
@@ -63,7 +64,7 @@ class AddMessageComponent extends Component {
               width={100}
               height={30}
               onChange={(checked) => {
-                this.setState({ isOnline: checked });
+                this.props.handleToggle(checked);
               }}
             />
           </div>
