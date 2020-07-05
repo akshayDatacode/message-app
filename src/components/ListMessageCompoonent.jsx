@@ -44,7 +44,11 @@ class ListMessageComponent extends Component {
                 <p>Body : {item.body}</p>{" "}
               </div>
               <div className="card-header text-right m-0 pl-4 pb-2 bg-white">
-                <button type="reset" className="btn btn-danger ml-5 p-1">
+                <button
+                  type="reset"
+                  className="btn btn-danger ml-5 p-1"
+                  onClick={() => this.props.handleDelete(item._id)}
+                >
                   Delete
                 </button>
               </div>

@@ -27,6 +27,8 @@ class AddMessageComponent extends Component {
       .catch((error) => {
         console.log(error);
       });
+
+    this.setState({ body: "", sender: "" });
   };
 
   handleInputChangeBody = (event) => {
@@ -73,9 +75,9 @@ class AddMessageComponent extends Component {
             </label>
             <div className="col-sm-10">
               <input
-                type="email"
                 className="form-control"
                 placeholder="Sender Name"
+                value={this.state.sender}
                 onChange={this.handleInputChangeSender}
               />
             </div>
@@ -86,9 +88,9 @@ class AddMessageComponent extends Component {
             </label>
             <div className="col-sm-10">
               <textarea
-                type="password"
                 className="form-control"
                 placeholder="Message Body"
+                value={this.state.body}
                 onChange={this.handleInputChangeBody}
               />
             </div>
