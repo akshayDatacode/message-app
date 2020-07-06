@@ -46,26 +46,52 @@ class AddMessageComponent extends Component {
     return (
       <>
         <h3 className="text-center">Message Send Form</h3>
-        <h6 className="badge badge-primary ">Network Mode :</h6>
-        {this.props.isOnline ? <p>Online</p> : <p>Offline</p>}
-        <div className="row text-right mb-3">
-          <div className="ml-3">
-            {/* ref toggle https://gitbrent.github.io/bootstrap-switch-button-react/ */}
-            <BootstrapSwitchButton
-              checked={this.props.isOnline}
-              onlabel="Online"
-              offlabel="Offline"
-              onstyle="success"
-              offstyle="danger"
-              size="xs"
-              width={100}
-              height={30}
-              onChange={(checked) => {
-                this.props.handleToggle(checked);
-              }}
-            />
+        <div className="row mb-4 mt-5 border border-primary pt-3">
+          <div className="col-8">
+            <div className="row">
+              <div className="col-4">
+                <h6 className="badge badge-primary ">Network Mode :</h6>
+              </div>
+              <div className="col-8">
+                {" "}
+                {this.props.isOnline ? <b>Online</b> : <b>Offline</b>}
+              </div>
+            </div>
+          </div>
+          <div className="col-2 ">
+            <div className="row text-right mb-3">
+              <div className="ml-3">
+                {/* ref toggle https://gitbrent.github.io/bootstrap-switch-button-react/ */}
+                <BootstrapSwitchButton
+                  checked={this.props.isOnline}
+                  onlabel="Online"
+                  offlabel="Offline"
+                  onstyle="success"
+                  offstyle="danger"
+                  size="xs"
+                  width={80}
+                  height={30}
+                  onChange={(checked) => {
+                    this.props.handleToggle(checked);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="col-2">
+            {this.props.isOnline && (
+              <button
+                className="btn btn-sm b btn-secondary"
+                onClick={() => {
+                  this.props.handleBufferMessage(this.state.messageBuffer);
+                }}
+              >
+                Refresh
+              </button>
+            )}
           </div>
         </div>
+
         <form>
           <div className="form-group row">
             <label for="inputEmail3" className="col-sm-2 col-form-label">
@@ -98,24 +124,13 @@ class AddMessageComponent extends Component {
               You are offline !. Message has been buffered
             </p>
           )}
+          {this.props.error && <p className="text-danger">Enter Data</p>}
           <div className="form-group row">
             <div className="col-sm-10">
               <button className="btn btn-primary" onClick={this.handleSubmit}>
                 Send Message
               </button>
             </div>
-          </div>
-          <div className="col-sm-10">
-            {this.props.isOnline && (
-              <button
-                className="btn btn-danger"
-                onClick={() => {
-                  this.props.handleBufferMessage(this.state.messageBuffer);
-                }}
-              >
-                Refresh
-              </button>
-            )}
           </div>
         </form>
       </>

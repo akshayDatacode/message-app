@@ -3,15 +3,15 @@ const messageModel = require("../models/messageModel");
 
 const { validationResult } = require("express-validator");
 
-// ===================================
+//========add message ===============================================================
 
-const addMessage = async (req, res , next) => {
+const addMessage = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(
       new HttpResponse("Invalid inputs passed, please check your data.", 422),
-      console.log(errors) 
-      );
+      console.log(errors)
+    );
   }
 
   console.log(req.body);
@@ -39,14 +39,13 @@ const addMessage = async (req, res , next) => {
 
 const getMessages = async (req, res) => {
   try {
-    const messages = await messageModel.find({}).sort({"createdAt": -1});
+    const messages = await messageModel.find({}).sort({ createdAt: -1 });
     res.send({ message: messages, success: true });
   } catch (error) {
     console.error(error);
     res.send({ success: false });
   }
 };
-
 
 // deleteMessages=====================================================================
 
@@ -59,8 +58,6 @@ const deleteMessage = async (req, res) => {
     res.send({ success: false });
   }
 };
-
-
 
 exports.addMessage = addMessage;
 exports.getMessages = getMessages;

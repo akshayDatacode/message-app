@@ -52,12 +52,14 @@ class MainComponent extends Component {
         })
         .catch((error) => {
           console.log(error);
+          this.setState({
+            error,
+          });
         });
     }
   };
 
   handleBufferMessage = (messageBuffer) => {
-    console.log("Main Buffer ", messageBuffer);
     messageBuffer.forEach((item) => {
       axios
         .post(add_message, item)
@@ -67,6 +69,9 @@ class MainComponent extends Component {
         .catch((error) => {
           console.log(error);
         });
+    });
+    this.setState({
+      error: null,
     });
   };
 
@@ -114,6 +119,7 @@ class MainComponent extends Component {
               handleToggle={this.handleToggle}
               addMessage={this.addMessage}
               handleBufferMessage={this.handleBufferMessage}
+              error={this.state.error}
             />
           </div>
           <div className="col-md-6 p-5 border border-dark">
