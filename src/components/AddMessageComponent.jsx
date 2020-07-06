@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
-import axios from "axios";
-
-const API = "http://www.localhost:5000/api/add_message";
 
 class AddMessageComponent extends Component {
   state = {
     body: "",
     sender: "",
+    messageBuffer: [],
+    showError: false,
   };
 
   handleSubmit = (event) => {
@@ -18,14 +17,11 @@ class AddMessageComponent extends Component {
       sender: this.state.sender,
     };
     if (this.props.isOnline) {
-      axios
-        .post(API, message)
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      this.props.addMessage(message);
+    } else {
+      const messageRef = [...this.state.messageBuffer];
+      messageRef.push(message);
+      this.setState({ messageBuffer: messageRef, showError: true });
     }
 
     this.setState({ body: "", sender: "" });
@@ -42,6 +38,7 @@ class AddMessageComponent extends Component {
     event.preventDefault();
     this.setState({
       sender: event.target.value,
+      showError: false,
     });
   };
 
@@ -96,17 +93,29 @@ class AddMessageComponent extends Component {
               />
             </div>
           </div>
-
+          {this.state.showError && (
+            <p className="text-danger">
+              You are offline !. Message has been buffered
+            </p>
+          )}
           <div className="form-group row">
             <div className="col-sm-10">
-              <button
-                type="submit"
-                className="btn btn-primary"
-                onClick={this.handleSubmit}
-              >
+              <button className="btn btn-primary" onClick={this.handleSubmit}>
                 Send Message
               </button>
             </div>
+          </div>
+          <div className="col-sm-10">
+            {this.props.isOnline && (
+              <button
+                className="btn btn-danger"
+                onClick={() => {
+                  this.props.handleBufferMessage(this.state.messageBuffer);
+                }}
+              >
+                Refresh
+              </button>
+            )}
           </div>
         </form>
       </>

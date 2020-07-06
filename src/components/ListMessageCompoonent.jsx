@@ -1,48 +1,13 @@
 import React, { Component } from "react";
-import axios from "axios";
-
-const API = "http://www.localhost:5000/api/get_messages";
 
 class ListMessageComponent extends Component {
-  intervalID;
-
-  state = {
-    message: [],
-    isLoading: false,
-    error: null,
-  };
-
-  componentDidMount() {
-    this.getMessages();
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.intervalID);
-  }
-
-  getMessages = () => {
-    axios
-      .get(API)
-      .then((result) => {
-        this.setState({
-          message: result.data.message,
-          isLoading: false,
-        });
-        this.intervalID = setTimeout(this.getMessages, 1000);
-      })
-      .catch((error) =>
-        this.setState({
-          error,
-          isLoading: false,
-        })
-      );
-  };
+  state = {};
 
   render() {
     return (
       <>
         <h3 className="text-center mb-3">Messages List </h3>
-        {this.state.message.map((item) => (
+        {this.props.messages.map((item) => (
           <div>
             <div className="card border-primary shadow mb-2">
               <div className="card-header m-0 pl-3 pb-1 pt-1">
