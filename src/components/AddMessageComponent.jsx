@@ -27,19 +27,12 @@ class AddMessageComponent extends Component {
     this.setState({ body: "", sender: "" });
   };
 
-  handleInputChangeBody = (event) => {
+  handleInputChange = (event) => {
     event.preventDefault();
     this.setState({
-      body: event.target.value,
+      [event.target.name]: event.target.value,
     });
-  };
-
-  handleInputChangeSender = (event) => {
-    event.preventDefault();
-    this.setState({
-      sender: event.target.value,
-      showError: false,
-    });
+    this.props.handleError();
   };
 
   render() {
@@ -47,18 +40,17 @@ class AddMessageComponent extends Component {
       <>
         <h3 className="text-center">Message Send Form</h3>
         <div className="row mb-4 mt-5 border border-primary pt-3">
-          <div className="col-8">
+          <div className="col-5">
             <div className="row">
-              <div className="col-4">
-                <h6 className="badge badge-primary ">Network Mode :</h6>
+              <div className="col-6">
+                <h6 className="badge badge-primary mr-5">Network Status :</h6>
               </div>
-              <div className="col-8">
-                {" "}
+              <div className="col-2">
                 {this.props.isOnline ? <b>Online</b> : <b>Offline</b>}
               </div>
             </div>
           </div>
-          <div className="col-2 ">
+          <div className="col-5 ">
             <div className="row text-right mb-3">
               <div className="ml-3">
                 {/* ref toggle https://gitbrent.github.io/bootstrap-switch-button-react/ */}
@@ -73,22 +65,12 @@ class AddMessageComponent extends Component {
                   height={30}
                   onChange={(checked) => {
                     this.props.handleToggle(checked);
+                    this.setState({ showError: false });
+                    this.props.handleBufferMessage(this.state.messageBuffer);
                   }}
                 />
               </div>
             </div>
-          </div>
-          <div className="col-2">
-            {this.props.isOnline && (
-              <button
-                className="btn btn-sm b btn-secondary"
-                onClick={() => {
-                  this.props.handleBufferMessage(this.state.messageBuffer);
-                }}
-              >
-                Refresh
-              </button>
-            )}
           </div>
         </div>
 
@@ -102,7 +84,8 @@ class AddMessageComponent extends Component {
                 className="form-control"
                 placeholder="Sender Name"
                 value={this.state.sender}
-                onChange={this.handleInputChangeSender}
+                name="sender"
+                onChange={this.handleInputChange}
               />
             </div>
           </div>
@@ -114,8 +97,9 @@ class AddMessageComponent extends Component {
               <textarea
                 className="form-control"
                 placeholder="Message Body"
+                name="body"
                 value={this.state.body}
-                onChange={this.handleInputChangeBody}
+                onChange={this.handleInputChange}
               />
             </div>
           </div>

@@ -7,14 +7,14 @@ const DeleteModal = (props) => {
       <Modal show={props.show} size="lg" onHide={props.handleClose}>
         <Modal.Header closeButton></Modal.Header>
         <Modal.Body className="text-center">
-          Are you Sure Want to Delete the Message{" "}
+          Are you sure want to delete
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={props.handleClose}>
-            Close
+            Cancel
           </Button>
           <Button variant="danger" onClick={props.deleteMessage}>
-            Delete
+            Confirm
           </Button>
         </Modal.Footer>
       </Modal>

@@ -70,9 +70,6 @@ class MainComponent extends Component {
           console.log(error);
         });
     });
-    this.setState({
-      error: null,
-    });
   };
 
   deleteMessage = () => {
@@ -89,6 +86,10 @@ class MainComponent extends Component {
       });
 
     this.setState({ show: false });
+  };
+
+  handleError = () => {
+    this.setState({ error: null });
   };
 
   handleDelete = (id) => {
@@ -120,6 +121,7 @@ class MainComponent extends Component {
               addMessage={this.addMessage}
               handleBufferMessage={this.handleBufferMessage}
               error={this.state.error}
+              handleError={this.handleError}
             />
           </div>
           <div className="col-md-6 p-5 border border-dark">
